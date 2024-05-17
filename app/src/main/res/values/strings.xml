@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Vacation Scheduler</string>
+    <string name="vacation_scheduler">Vacation Scheduler</string>
+    <string name="enter">Enter</string>
+    <string name="todo">TODO</string>
+    <string name="first">Title: </string>
+    <string name="second">second</string>
+    <string name="third">third</string>
+    <string name="fourth">fourth</string>
+    <string name="fifth">fifth</string>
 </resources>
