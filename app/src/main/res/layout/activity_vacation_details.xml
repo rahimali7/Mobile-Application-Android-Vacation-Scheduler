@@ -28,13 +28,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:padding="10dp"
-                android:text="Title" />
+                android:text="Title"/>
 
             <EditText
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:text="Title" />
+                android:text="Title"/>
 
             </LinearLayout>
 
@@ -47,13 +47,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:padding="10dp"
-                    android:text="Hotel" />
+                    android:text="Hotel"/>
 
                 <EditText
                     android:id="@+id/hotel"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:text="Hotel" />
+                    android:text="Hotel"/>
 
             </LinearLayout>
 
@@ -66,13 +66,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:padding="10dp"
-                    android:text="Start Date" />
+                    android:text="Start Date"/>
 
                 <EditText
                     android:id="@+id/startDate"
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="@string/second" />
+                    android:layout_height="50dp"/>
 
             </LinearLayout>
 
@@ -90,8 +89,7 @@
                 <EditText
                     android:id="@+id/endDate"
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="@string/second" />
+                    android:layout_height="50dp"/>
 
             </LinearLayout>
         </LinearLayout>
