@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.ExcursionViewHolder> {
     private List<Excursion> mExcursions;
-    private static Context context;
+    private final Context context;
     private final LayoutInflater mInflater;
 
 
@@ -25,10 +25,10 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
 
         private final TextView excursionItemView;
         private final TextView excursionItemView2;
-        private ExcursionViewHolder(@NonNull View itemView) {
+        private ExcursionViewHolder(View itemView) {
             super(itemView);
-            excursionItemView = itemView.findViewById(R.id.textView2);
-            excursionItemView2 = itemView.findViewById(R.id.textView3);
+            excursionItemView = itemView.findViewById(R.id.textView3);
+            excursionItemView2 = itemView.findViewById(R.id.textView4);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -45,24 +45,22 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
     }
     public ExcursionAdapter(Context context){
         mInflater=LayoutInflater.from(context);
-        this.context=context;
+        this.context =context;
     }
-
-    @NonNull
     @Override
-    public ExcursionAdapter.ExcursionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+    public ExcursionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         View itemView = mInflater.inflate(R.layout.excursion_list_item, parent, false);
         return new ExcursionViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExcursionAdapter.ExcursionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExcursionViewHolder holder, int position) {
         if (mExcursions!=null){
             Excursion current = mExcursions.get(position);
             String name = current.getTitle();
-            int excursionID = current.getExcursionID();
+            int vacationID = current.getVacationID();
             holder.excursionItemView.setText(name);
-            holder.excursionItemView2.setText(Integer.toString(excursionID));
+            holder.excursionItemView2.setText(Integer.toString(vacationID));
         }
         else {
             holder.excursionItemView.setText("No excursion name");

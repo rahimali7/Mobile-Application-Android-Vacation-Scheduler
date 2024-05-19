@@ -17,16 +17,16 @@ import java.util.List;
 
 public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.VacationViewHolder> {
 
-    private static List<Vacation> mVacations;
-    private static Context context;
+    private List<Vacation> mVacations;
+    private final Context context;
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public VacationAdapter(Context context){
         mInflater = LayoutInflater.from(context);
         this.context = context;
     }
-    public static class VacationViewHolder extends RecyclerView.ViewHolder {
+    public class VacationViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView vacationItemView;
 
@@ -41,9 +41,10 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
                     final Vacation current = mVacations.get(position);
                     Intent intent = new Intent(context, VacationDetails.class);
                     intent.putExtra("id", current.getVacationID());
-                    intent.putExtra("name", current.getHotel());
-                    intent.putExtra("startdate", current.getStartDate());
-                    intent.putExtra("enddate", current.getEndDate());
+                    intent.putExtra("title", current.getHotel());
+                    intent.putExtra("hotel", current.getHotel());
+                    intent.putExtra("start date", current.getStartDate());
+                    intent.putExtra("end date", current.getEndDate());
                     context.startActivity(intent);
                 }
             });

@@ -13,8 +13,8 @@ import java.util.concurrent.Executors;
 
 public class Repository {
 
-    private ExcursionDAO mExcursionDAO;
-    private VacationDAO mVacationDAO;
+    private final ExcursionDAO mExcursionDAO;
+    private final VacationDAO mVacationDAO;
 
     private List<Vacation> mAllVacations;
     private List<Excursion> mAllExcursions;
@@ -84,10 +84,25 @@ public class Repository {
     }
 
 
-    //Get all Excursions
+    //Get associated Excursions
     public List<Excursion>getAssociatedExcursions(int vacationID){
         databaseExecutor.execute(()->{
             mAllExcursions=mExcursionDAO.getAssociatedExcursions(vacationID);
+        });
+
+        try{
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return mAllExcursions;
+    }
+
+    //Get all Excursions
+    public List<Excursion>getAllExcursions(){
+        databaseExecutor.execute(()->{
+            mAllExcursions=mExcursionDAO.getAllExcursions();
         });
 
         try{

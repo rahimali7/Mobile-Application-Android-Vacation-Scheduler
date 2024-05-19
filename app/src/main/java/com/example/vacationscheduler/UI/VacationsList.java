@@ -30,9 +30,7 @@ public class VacationsList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_vacations_list);
-
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,24 +53,19 @@ public class VacationsList extends AppCompatActivity {
         return true;
     }
 
-    @Override
+
     public boolean onOptionsItemSelected(MenuItem menuItem){
         if(menuItem.getItemId()==R.id.sample){
             repository = new Repository(getApplication());
             //Toast.makeText(VacationsList.this, "Put in vacation details", Toast.LENGTH_LONG).show();
-            Vacation vacation1 = new Vacation(0, "Italy", "La comma", "10/06/2024", "20/06/2024");
-            repository.insert(vacation1);
-            vacation1 = new Vacation(0, "Greece", "Hamilton", "13/07/2024", "23/07/2024");
-            repository.insert(vacation1);
-            vacation1 = new Vacation(0, "USA", "Blues", "15/07/2024", "30/07/2024");
-            repository.insert(vacation1);
-            Excursion excursion1 = new Excursion(0, "Snorkeling", "11/06/2024", 1);
-            repository.insert(excursion1);
-            excursion1 = new Excursion(0, "Swimming", "10/06/2024", 2);
-            repository.insert(excursion1);
-            excursion1 = new Excursion(0, "Hiking", "15/06/2024", 3);
-            repository.insert(excursion1);
-
+            Vacation vacation = new Vacation(0, "Italy Trip", "Hilton", "01/01/2025", "01/10/2025");
+            repository.insert(vacation);
+            vacation = new Vacation(0, "Maldives", "The Standard", "06/01/2024", "06/10/2024");
+            repository.insert(vacation);
+            Excursion excursion=new Excursion(0, "Swimming", "06/05/2024", 1);
+            repository.insert(excursion);
+            excursion = new Excursion(0, "Hiking", "06/07/2024", 1);
+            repository.insert(vacation);
 
             return true;
         }
