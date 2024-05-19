@@ -8,4 +8,6 @@
     <string name="third">third</string>
     <string name="fourth">fourth</string>
     <string name="fifth">fifth</string>
+    <string name="date">Date</string>
+    <string name="title">Title</string>
 </resources>
