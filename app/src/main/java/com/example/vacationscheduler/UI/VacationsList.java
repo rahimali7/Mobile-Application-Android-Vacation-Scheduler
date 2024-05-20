@@ -60,8 +60,6 @@ public class VacationsList extends AppCompatActivity {
             //Toast.makeText(VacationsList.this, "Put in vacation details", Toast.LENGTH_LONG).show();
             Vacation vacation = new Vacation(0, "Italy Trip", "Hilton", "01/01/2025", "01/10/2025");
             repository.insert(vacation);
-            vacation = new Vacation(0, "Maldives", "The Standard", "06/01/2024", "06/10/2024");
-            repository.insert(vacation);
             Excursion excursion=new Excursion(0, "Swimming", "06/05/2024", 1);
             repository.insert(excursion);
             excursion = new Excursion(0, "Hiking", "06/07/2024", 1);

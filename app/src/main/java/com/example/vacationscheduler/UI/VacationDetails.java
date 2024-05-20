@@ -50,8 +50,8 @@ public class VacationDetails extends AppCompatActivity {
         vacationID = getIntent().getIntExtra("id", -1);
         title = getIntent().getStringExtra("title");
         hotel = getIntent().getStringExtra("hotel");
-        endDate = getIntent().getStringExtra("start date");
-        startDate = getIntent().getStringExtra("end date");
+        startDate = getIntent().getStringExtra("start date");
+        endDate = getIntent().getStringExtra("end date");
         editTitle.setText(title);
         editHotel.setText(hotel);
         edit_start_date.setText(startDate);
@@ -68,7 +68,12 @@ public class VacationDetails extends AppCompatActivity {
         final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        excursionAdapter.setExcursion(repository.getAllExcursions());
+        //excursionAdapter.setExcursion(repository.getAllExcursions());
+        List<Excursion> filteredExcursions = new ArrayList<>();
+        for (Excursion e:repository.getAllExcursions()){
+            if (e.getVacationID()==vacationID) filteredExcursions.add(e);
+        }
+        excursionAdapter.setExcursion(filteredExcursions );
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -80,7 +85,7 @@ public class VacationDetails extends AppCompatActivity {
         if (item.getItemId()==R.id.vacationsave){
             Vacation vacation;
             if (vacationID == -1){
-                if (repository.getmAllVacations().size()==0) {
+                if (repository.getmAllVacations().isEmpty()) {
                     vacationID = 1;
                 }
                 else vacationID = repository.getmAllVacations().get(repository.getmAllVacations().size() - 1).getVacationID() + 1;
@@ -129,7 +134,7 @@ public class VacationDetails extends AppCompatActivity {
         for (Excursion e:repository.getAllExcursions()){
             if (e.getVacationID()==vacationID) filteredExcursions.add(e);
         }
-        excursionAdapter.setExcursion(filteredExcursions);
+        excursionAdapter.setExcursion(filteredExcursions );
     }
 
 }

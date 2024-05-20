@@ -41,7 +41,7 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
                     final Vacation current = mVacations.get(position);
                     Intent intent = new Intent(context, VacationDetails.class);
                     intent.putExtra("id", current.getVacationID());
-                    intent.putExtra("title", current.getHotel());
+                    intent.putExtra("title", current.getTitle());
                     intent.putExtra("hotel", current.getHotel());
                     intent.putExtra("start date", current.getStartDate());
                     intent.putExtra("end date", current.getEndDate());
