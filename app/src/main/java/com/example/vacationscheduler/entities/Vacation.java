@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = "Vacations")
+@Entity(tableName = "vacations")
 public class Vacation {
     @PrimaryKey(autoGenerate = true)
     private int vacationID;

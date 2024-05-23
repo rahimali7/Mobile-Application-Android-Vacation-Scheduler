@@ -20,11 +20,11 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
     private final Context context;
     private final LayoutInflater mInflater;
 
-
     class ExcursionViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView excursionItemView;
         private final TextView excursionItemView2;
+
         private ExcursionViewHolder(View itemView) {
             super(itemView);
             excursionItemView = itemView.findViewById(R.id.textView3);
@@ -64,7 +64,7 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
         }
         else {
             holder.excursionItemView.setText("No excursion name");
-            holder.excursionItemView2.setText("No excursion id");
+            holder.excursionItemView.setText("No vacation id");
         }
     }
     public void setExcursion(List<Excursion> excursions){

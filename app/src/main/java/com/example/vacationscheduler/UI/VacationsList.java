@@ -24,9 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 public class VacationsList extends AppCompatActivity {
-
     private Repository repository;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,23 +52,45 @@ public class VacationsList extends AppCompatActivity {
     }
 
 
+
     public boolean onOptionsItemSelected(MenuItem menuItem){
-        if(menuItem.getItemId()==R.id.sample){
+        if (menuItem.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;}
+
+        if(menuItem.getItemId()==R.id.addSampleVacations){
             repository = new Repository(getApplication());
-            //Toast.makeText(VacationsList.this, "Put in vacation details", Toast.LENGTH_LONG).show();
-            Vacation vacation = new Vacation(0, "Italy Trip", "Hilton", "01/01/2025", "01/10/2025");
+            Vacation vacation = new Vacation(1, "Italy Trip", "Hilton", "01/01/2025",
+                    "01/10/2025");
             repository.insert(vacation);
-            Excursion excursion=new Excursion(0, "Swimming", "06/05/2024", 1);
+            Vacation vacation2 = new Vacation(2, "USA Trip", "Hilton", "02/01/2025",
+                    "02/10/2025");
+            repository.insert(vacation2);
+            Excursion excursion=new Excursion(1, "Swimming", "06/05/2024", 1);
             repository.insert(excursion);
-            excursion = new Excursion(0, "Hiking", "06/07/2024", 1);
-            repository.insert(vacation);
+            Excursion excursion2 = new Excursion(2, "Hiking", "06/07/2024", 2);
+            repository.insert(excursion2);
+            List<Vacation> allVacations=repository.getmAllVacations();
+            RecyclerView recyclerView = findViewById(R.id.recyclerview);
+            final VacationAdapter vacationAdapter = new VacationAdapter(this);
+            recyclerView.setAdapter(vacationAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            vacationAdapter.setVacations(allVacations);
 
             return true;
         }
-        if(menuItem.getItemId()==android.R.id.home){
-            this.finish();
-            return  true;
-        }
-        return true;
+        return super.onOptionsItemSelected(menuItem);
+    }
+
+    @Override
+    protected void onResume(){
+
+        super.onResume();
+        List<Vacation> allVacations = repository.getmAllVacations();
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        final VacationAdapter vacationAdapter = new VacationAdapter(this);
+        recyclerView.setAdapter(vacationAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        vacationAdapter.setVacations(allVacations);
     }
 }

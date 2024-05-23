@@ -3,6 +3,7 @@ package com.example.vacationscheduler.UI;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
@@ -11,8 +12,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.vacationscheduler.R;
 
-public class MyReceiver implements MyReceiverr {
-    String channel_id = "testing";
+public class MyReceiver extends BroadcastReceiver {
+    String channel_id = "test";
     static int notificationID;
 
     @Override

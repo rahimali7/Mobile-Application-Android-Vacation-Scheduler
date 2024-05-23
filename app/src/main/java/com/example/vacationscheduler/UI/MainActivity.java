@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, VacationsList.class);
-                intent.putExtra("test", "Information Sent");
                 startActivity(intent);
             }
         });

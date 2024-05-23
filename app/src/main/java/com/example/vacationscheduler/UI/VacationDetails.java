@@ -33,16 +33,14 @@ public class VacationDetails extends AppCompatActivity {
     EditText edit_start_date;
     EditText edit_end_date;
     Repository repository;
-
     Vacation currentVacation;
-
     int numExcursions;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation_details);
         FloatingActionButton floatingActionButton2 = findViewById(R.id.floatingActionButton2);
+
         editTitle = findViewById(R.id.title);
         editHotel = findViewById(R.id.hotel);
         edit_start_date = findViewById(R.id.startDate);
@@ -60,6 +58,7 @@ public class VacationDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
+                intent.putExtra("vacationID", vacationID);
                 startActivity(intent);
             }
         });
@@ -82,13 +81,17 @@ public class VacationDetails extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;}
         if (item.getItemId()==R.id.vacationsave){
             Vacation vacation;
             if (vacationID == -1){
-                if (repository.getmAllVacations().isEmpty()) {
+                if (repository.getmAllVacations().size()==0) {
                     vacationID = 1;
                 }
-                else vacationID = repository.getmAllVacations().get(repository.getmAllVacations().size() - 1).getVacationID() + 1;
+                else vacationID = repository.getmAllVacations().get(repository
+                        .getmAllVacations().size() - 1).getVacationID() + 1;
                 vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(),
                         edit_start_date.getText().toString(), edit_end_date.getText().toString());
                 repository.insert(vacation);
@@ -114,7 +117,7 @@ public class VacationDetails extends AppCompatActivity {
             if (numExcursions==0){
                 repository.delete(currentVacation);
                 Toast.makeText(VacationDetails.this, currentVacation.getTitle() + " was deleted", Toast.LENGTH_LONG).show();
-                VacationDetails.this.finish();
+                this.finish();
             }
             else{
                 Toast.makeText(this, "Can't delete a vacation with excursions", Toast.LENGTH_SHORT).show();

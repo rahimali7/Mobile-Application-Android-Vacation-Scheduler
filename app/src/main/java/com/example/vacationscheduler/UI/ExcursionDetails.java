@@ -31,8 +31,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class ExcursionDetails extends AppCompatActivity {
-    int excursionID;
     String title;
+    int excursionID;
     int vacationID;
     EditText editTitle;
     EditText editNote;
@@ -57,15 +57,36 @@ public class ExcursionDetails extends AppCompatActivity {
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
+        ArrayList<Vacation> vacationArrayList = new ArrayList<>();
+        vacationArrayList.addAll(repository.getmAllVacations());
+        ArrayList<String> vacationTitleList = new ArrayList<>();
+        for (Vacation vacation:vacationArrayList){
+            vacationTitleList.add(vacation.getTitle());
+        }
+        ArrayAdapter<String> vacationTitleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, vacationTitleList);
+        Spinner spinner = findViewById(R.id.spinner);
+        spinner.setAdapter(vacationTitleAdapter);
+
+        startDate=new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendarStart.set(Calendar.YEAR, year);
+                myCalendarStart.set(Calendar.MONTH, monthOfYear);
+                myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabelStart();
+
+            }
+        };
+
         editDate.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Date date;
+                Date date = new Date();
                 //get value from other screen,but I'm going to hard code it right now
                 String info=editDate.getText().toString();
-                if(info.equals(""))info="07/01/23";
+                Vacation vacationDate;
+                if(info.equals("")) info = date.toString();
                 try{
                     myCalendarStart.setTime(sdf.parse(info));
                 } catch (ParseException e) {
@@ -77,32 +98,22 @@ public class ExcursionDetails extends AppCompatActivity {
             }
         });
 
-        startDate=new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendarStart.set(Calendar.YEAR, year);
-                myCalendarStart.set(Calendar.MONTH, month);
-                myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabelStart();
 
-            }
-        };
-
-        Spinner spinner=findViewById(R.id.spinner);
-        ArrayList<Vacation> vacationArrayList=new ArrayList<>();
-
-        vacationArrayList.addAll(repository.getmAllVacations());
-
-        ArrayAdapter<Vacation> vacationAdapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,vacationArrayList);
-        spinner.setAdapter(vacationAdapter);
-        spinner.setSelection(0);
+        /*Spinner spinner = findViewById(R.id.spinner);
+        ArrayList<Vacation> vacationsArrayList = new ArrayList<>();
+        vacationsArrayList.addAll(repository.getmAllVacations());
+        ArrayAdapter<Vacation> vacationArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+                vacationsArrayList);
+        spinner.setAdapter(vacationArrayAdapter);
+        spinner.setSelection(0);*/
     }
     private void updateLabelStart() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
+        String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         editDate.setText(sdf.format(myCalendarStart.getTime()));
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_excursiondetails, menu);
         return true;
@@ -124,20 +135,24 @@ public class ExcursionDetails extends AppCompatActivity {
                 if (repository.getAllExcursions().size() == 0)
                     excursionID = 1;
                 else
-                    excursionID = repository.getAllExcursions().get(repository.getAllExcursions().size() - 1).getExcursionID() + 1;
-                excursion = new Excursion(excursionID, editTitle.getText().toString(), editDate.toString(), vacationID);
+                    excursionID = repository.getAllExcursions().get(repository.getAllExcursions().size() - 1)
+                            .getExcursionID() + 1;
+                excursion = new Excursion(excursionID, editTitle.getText().toString(),
+                        editDate.toString(), vacationID);
                 repository.insert(excursion);
+                this.finish();
             } else {
                 excursion = new Excursion(excursionID, editTitle.getText().toString(), editDate.toString(), vacationID);
                 repository.update(excursion);
+                this.finish();
             }
             return true;
         }
         if (item.getItemId() == R.id.shareNote) {
             Intent sentIntent= new Intent();
             sentIntent.setAction(Intent.ACTION_SEND);
-            sentIntent.putExtra(Intent.EXTRA_TEXT, editNote.getText().toString()+ "EXTRA_TEXT");
-            sentIntent.putExtra(Intent.EXTRA_TITLE, editNote.getText().toString()+ "EXTRA_TITLE");
+            sentIntent.putExtra(Intent.EXTRA_TEXT, editNote.getText().toString()+ " EXTRA_TEXT");
+            sentIntent.putExtra(Intent.EXTRA_TITLE, editNote.getText().toString()+ " EXTRA_TITLE");
             sentIntent.setType("text/plain");
             Intent shareIntent=Intent.createChooser(sentIntent,null);
             startActivity(shareIntent);
@@ -156,7 +171,8 @@ public class ExcursionDetails extends AppCompatActivity {
             Long trigger = myDate.getTime();
             Intent intent = new Intent(ExcursionDetails.this, MyReceiver.class);
             intent.putExtra("key", "message I want to see");
-            PendingIntent sender=PendingIntent.getBroadcast(ExcursionDetails.this,++MainActivity.numAlert, intent,PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent sender=PendingIntent.getBroadcast(ExcursionDetails.this,++MainActivity.numAlert,
+                    intent,PendingIntent.FLAG_IMMUTABLE);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, trigger,sender);
             return true;

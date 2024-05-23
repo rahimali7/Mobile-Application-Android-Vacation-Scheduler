@@ -27,9 +27,7 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
         this.context = context;
     }
     public class VacationViewHolder extends RecyclerView.ViewHolder {
-
         private final TextView vacationItemView;
-
 
         public VacationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -50,8 +48,6 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
             });
         }
     }
-
-
     @NonNull
     @Override
     public VacationAdapter.VacationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -63,8 +59,8 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
     public void onBindViewHolder(@NonNull VacationAdapter.VacationViewHolder holder, int position) {
         if (mVacations!=null){
             Vacation current = mVacations.get(position);
-            String name = current.getTitle();
-            holder.vacationItemView.setText(name);
+            String title = current.getTitle();
+            holder.vacationItemView.setText(title);
         }
         else {
             holder.vacationItemView.setText("No vacation name");

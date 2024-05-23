@@ -13,8 +13,8 @@ import java.util.concurrent.Executors;
 
 public class Repository {
 
-    private final ExcursionDAO mExcursionDAO;
-    private final VacationDAO mVacationDAO;
+    private ExcursionDAO mExcursionDAO;
+    private VacationDAO mVacationDAO;
 
     private List<Vacation> mAllVacations;
     private List<Excursion> mAllExcursions;
