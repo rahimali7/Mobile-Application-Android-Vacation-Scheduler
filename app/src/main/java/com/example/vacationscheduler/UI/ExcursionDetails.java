@@ -37,6 +37,7 @@ public class ExcursionDetails extends AppCompatActivity {
     EditText editTitle;
     EditText editNote;
     TextView editDate;
+    Excursion currentExcursion;
     Repository repository;
     DatePickerDialog.OnDateSetListener startDate;
     final Calendar myCalendarStart = Calendar.getInstance();
@@ -98,14 +99,6 @@ public class ExcursionDetails extends AppCompatActivity {
             }
         });
 
-
-        /*Spinner spinner = findViewById(R.id.spinner);
-        ArrayList<Vacation> vacationsArrayList = new ArrayList<>();
-        vacationsArrayList.addAll(repository.getmAllVacations());
-        ArrayAdapter<Vacation> vacationArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                vacationsArrayList);
-        spinner.setAdapter(vacationArrayAdapter);
-        spinner.setSelection(0);*/
     }
     private void updateLabelStart() {
         String myFormat = "MM/dd/yy";
@@ -124,10 +117,7 @@ public class ExcursionDetails extends AppCompatActivity {
             this.finish();
             return true;
         }
-        // return true;
-//                Intent intent=new Intent(PartDetails.this,MainActivity.class);
-//                startActivity(intent);
-//                return true;
+
 
         if (item.getItemId() == R.id.excursionsave) {
             Excursion excursion;
@@ -138,16 +128,33 @@ public class ExcursionDetails extends AppCompatActivity {
                     excursionID = repository.getAllExcursions().get(repository.getAllExcursions().size() - 1)
                             .getExcursionID() + 1;
                 excursion = new Excursion(excursionID, editTitle.getText().toString(),
-                        editDate.toString(), vacationID);
+                        editDate.getText().toString(), vacationID);
                 repository.insert(excursion);
                 this.finish();
             } else {
-                excursion = new Excursion(excursionID, editTitle.getText().toString(), editDate.toString(), vacationID);
+                excursion = new Excursion(excursionID, editTitle.getText().toString(), editDate.getText().toString(), vacationID);
                 repository.update(excursion);
                 this.finish();
             }
             return true;
         }
+
+
+        if (item.getItemId()==R.id.excursiondelete) {
+            for (Excursion excursion:repository.getAllExcursions()){
+                if (excursion.getExcursionID()==excursionID){
+                    currentExcursion = excursion;
+                    repository.delete(currentExcursion);
+                    this.finish();
+                }
+            }
+        }
+
+
+
+
+
+
         if (item.getItemId() == R.id.shareNote) {
             Intent sentIntent= new Intent();
             sentIntent.setAction(Intent.ACTION_SEND);

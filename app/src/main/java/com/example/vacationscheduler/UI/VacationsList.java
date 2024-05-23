@@ -60,15 +60,15 @@ public class VacationsList extends AppCompatActivity {
 
         if(menuItem.getItemId()==R.id.addSampleVacations){
             repository = new Repository(getApplication());
-            Vacation vacation = new Vacation(1, "Italy Trip", "Hilton", "01/01/2025",
+            Vacation vacation = new Vacation(0, "Italy Trip", "Hilton", "01/01/2025",
                     "01/10/2025");
             repository.insert(vacation);
-            Vacation vacation2 = new Vacation(2, "USA Trip", "Hilton", "02/01/2025",
+            Vacation vacation2 = new Vacation(0, "USA Trip", "Hilton", "02/01/2025",
                     "02/10/2025");
             repository.insert(vacation2);
-            Excursion excursion=new Excursion(1, "Swimming", "06/05/2024", 1);
+            Excursion excursion=new Excursion(0, "Swimming", "06/05/2024", 1);
             repository.insert(excursion);
-            Excursion excursion2 = new Excursion(2, "Hiking", "06/07/2024", 2);
+            Excursion excursion2 = new Excursion(0, "Hiking", "06/07/2024", 2);
             repository.insert(excursion2);
             List<Vacation> allVacations=repository.getmAllVacations();
             RecyclerView recyclerView = findViewById(R.id.recyclerview);
@@ -81,6 +81,11 @@ public class VacationsList extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(menuItem);
     }
+
+
+
+
+
 
     @Override
     protected void onResume(){

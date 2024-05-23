@@ -19,8 +19,12 @@ import com.example.vacationscheduler.entities.Excursion;
 import com.example.vacationscheduler.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class VacationDetails extends AppCompatActivity {
     String title;
@@ -34,7 +38,9 @@ public class VacationDetails extends AppCompatActivity {
     EditText edit_end_date;
     Repository repository;
     Vacation currentVacation;
+
     int numExcursions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +60,11 @@ public class VacationDetails extends AppCompatActivity {
         editHotel.setText(hotel);
         edit_start_date.setText(startDate);
         edit_end_date.setText(endDate);
+
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //verifyDates();
                 Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
                 intent.putExtra("vacationID", vacationID);
                 startActivity(intent);
@@ -85,6 +93,7 @@ public class VacationDetails extends AppCompatActivity {
             this.finish();
             return true;}
         if (item.getItemId()==R.id.vacationsave){
+            //verifyDates();
             Vacation vacation;
             if (vacationID == -1){
                 if (repository.getmAllVacations().size()==0) {
@@ -94,15 +103,51 @@ public class VacationDetails extends AppCompatActivity {
                         .getmAllVacations().size() - 1).getVacationID() + 1;
                 vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(),
                         edit_start_date.getText().toString(), edit_end_date.getText().toString());
-                repository.insert(vacation);
-                this.finish();
+                String dateFormat = "MM/dd/yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+                try {
+                    Date vacayStart = sdf.parse(vacation.getStartDate());
+                    Date vacayEnd = sdf.parse(vacation.getEndDate());
+                    if(vacayEnd.before(vacayStart)) {
+                        Toast.makeText(VacationDetails.this, "Vacation end date must be after the vacation start date!", Toast.LENGTH_LONG).show();
+                        return false;
+                    }
+                    else if (vacayStart.after(vacayEnd)) {
+                        Toast.makeText(this, "Vacation start date is after end date.", Toast.LENGTH_LONG).show();
+                        return false;
+                    }
+                    else {
+                        repository.insert(vacation);
+                        this.finish();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
             }
             else {
                 vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(),
                         edit_start_date.getText().toString(), edit_end_date.getText().toString());
-                repository.update(vacation);
-                this.finish();
+                String dateFormat = "MM/dd/yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+                try {
+                    Date vacayStart = sdf.parse(vacation.getStartDate());
+                    Date vacayEnd = sdf.parse(vacation.getEndDate());
+                    if(vacayEnd.before(vacayStart)) {
+                        Toast.makeText(VacationDetails.this, "Vacation end date must be after the vacation start date!", Toast.LENGTH_LONG).show();
+                        return false;
+                    }
+                    else if (vacayStart.after(vacayEnd)) {
+                        Toast.makeText(this, "Vacation start date is after end date.", Toast.LENGTH_LONG).show();
+                        return false;
+                    }
+                    else {
+                        repository.update(vacation);
+                        this.finish();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         }
         // do for when deleting a vacation
@@ -123,8 +168,47 @@ public class VacationDetails extends AppCompatActivity {
                 Toast.makeText(this, "Can't delete a vacation with excursions", Toast.LENGTH_SHORT).show();
             }
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
+
+
+
+    public void verifyDates() {
+        String vacStartDate = edit_start_date.getText().toString();
+        String vacEndDate = edit_end_date.getText().toString();
+        String dateFormat = "MM/dd/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+
+        try {
+            Date vacationStartDate = sdf.parse(vacStartDate);
+            Date vacationEndDate = sdf.parse(vacEndDate);
+
+            assert vacationEndDate != null;
+            if (vacationEndDate.before(vacationStartDate)) {
+                Toast.makeText(this, "Vacation end date is before start date.", Toast.LENGTH_LONG).show();
+            } else {
+                assert vacationStartDate != null;
+                if (vacationStartDate.after(vacationEndDate)) {
+                    Toast.makeText(this, "Vacation start date is after end date.", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(this, "Dates are valid.", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+        catch (ParseException e){
+            Toast.makeText(this, "Invalid date format. Please use MM-dd-yyyy.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     @Override
     protected void onResume() {
@@ -139,5 +223,7 @@ public class VacationDetails extends AppCompatActivity {
         }
         excursionAdapter.setExcursion(filteredExcursions );
     }
+
+
 
 }

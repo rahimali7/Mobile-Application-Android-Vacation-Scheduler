@@ -23,6 +23,8 @@
         android:id="@+id/recyclerview"
         android:layout_width="409dp"
         android:layout_height="657dp"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp"
         app:layout_constraintLeft_toLeftOf="parent"

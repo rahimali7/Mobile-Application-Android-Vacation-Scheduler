@@ -11,90 +11,115 @@
         android:id="@+id/scrollview"
         android:layout_width="409dp"
         android:layout_height="200dp"
-        android:layout_marginTop="56dp"
-        android:background="#00BCD4"
+        android:layout_marginTop="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
-                    android:text="Title: "></TextView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:hint="Title"></EditText>
-                />
+                    <LinearLayout
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Vacation: "
+                            android:textSize="17sp"></TextView>
+
+                        <EditText
+                            android:id="@+id/title"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:hint="  Trip Title  "
+                            android:textSize="17sp"></EditText>
+                        />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingVertical="15dp">
+
+                        <TextView
+                            android:id="@+id/hotelName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Hotel: "
+                            android:textSize="17sp"></TextView>
+
+                        <EditText
+                            android:id="@+id/hotel"
+                            android:layout_width="132dp"
+                            android:layout_height="wrap_content"
+                            android:hint="    Hotel Name"
+                            android:textSize="17sp"></EditText>
+                        />
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
-                    android:text="Hotel"></TextView>
-
-                <EditText
-                    android:id="@+id/hotel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:hint="Hotel"></EditText>
-                />
-            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
-                    android:text="Start Date"></TextView>
+                <LinearLayout
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="15dp">
 
-                <EditText
-                    android:id="@+id/startDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:hint="Start Date"></EditText>
-                />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Start Date"
+                        android:textSize="17sp"></TextView>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/startDate"
+                        android:layout_width="107dp"
+                        android:layout_height="wrap_content"
+                        android:hint="  Start Date"
+                        android:textSize="17sp"></EditText>
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
-                    android:text="End Date"></TextView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="15dp">
 
-                <EditText
-                    android:id="@+id/endDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:hint="End Date"></EditText>
-                />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="End Date"
+                        android:textSize="17sp"></TextView>
+
+                    <EditText
+                        android:id="@+id/endDate"
+                        android:layout_width="116dp"
+                        android:layout_height="wrap_content"
+                        android:hint="    End Date"
+                        android:textSize="17sp"></EditText>
+                    </LinearLayout>
+                </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -111,10 +136,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/excursionrecyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_width="409dp"
+        android:layout_height="464dp"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="201dp"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollview" />
 
