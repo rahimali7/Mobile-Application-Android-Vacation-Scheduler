@@ -1,11 +1,14 @@
 package com.example.vacationscheduler.UI;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -34,12 +38,17 @@ public class VacationDetails extends AppCompatActivity {
     int vacationID;
     EditText editTitle;
     EditText editHotel;
-    EditText edit_start_date;
-    EditText edit_end_date;
+    TextView edit_start_date;
+    TextView edit_end_date;
     Repository repository;
     Vacation currentVacation;
 
     int numExcursions;
+
+    DatePickerDialog.OnDateSetListener start_Date;
+    DatePickerDialog.OnDateSetListener end_Date;
+    final Calendar myCalendarStart = Calendar.getInstance();
+    final Calendar myCalendarEnd = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +70,9 @@ public class VacationDetails extends AppCompatActivity {
         edit_start_date.setText(startDate);
         edit_end_date.setText(endDate);
 
+        String myFormat = "MM/dd/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,13 +87,92 @@ public class VacationDetails extends AppCompatActivity {
         final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //excursionAdapter.setExcursion(repository.getAllExcursions());
         List<Excursion> filteredExcursions = new ArrayList<>();
         for (Excursion e:repository.getAllExcursions()){
             if (e.getVacationID()==vacationID) filteredExcursions.add(e);
         }
         excursionAdapter.setExcursion(filteredExcursions );
+
+        start_Date=new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendarStart.set(Calendar.YEAR, year);
+                myCalendarStart.set(Calendar.MONTH, monthOfYear);
+                myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabelStart();
+
+            }
+        };
+
+
+        end_Date=new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendarEnd.set(Calendar.YEAR, year);
+                myCalendarEnd.set(Calendar.MONTH, monthOfYear);
+                myCalendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabelStart();
+
+            }
+        };
+
+        edit_start_date.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Date date = new Date();
+                String info=edit_start_date.getText().toString();
+                //Vacation vacationDate;
+                if(info.equals("")) info = date.toString();
+                try{
+                    myCalendarStart.setTime(sdf.parse(info));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                new DatePickerDialog(VacationDetails.this, start_Date, myCalendarStart
+                        .get(Calendar.YEAR), myCalendarStart.get(Calendar.MONTH),
+                        myCalendarStart.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        edit_end_date.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Date date = new Date();
+                String info=edit_end_date.getText().toString();
+                //Vacation vacationDate;
+                if(info.equals("")) info = date.toString();
+                try{
+                    myCalendarEnd.setTime(sdf.parse(info));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                new DatePickerDialog(VacationDetails.this, end_Date, myCalendarEnd
+                        .get(Calendar.YEAR), myCalendarEnd.get(Calendar.MONTH),
+                        myCalendarEnd.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
     }
+
+
+
+
+
+    private void updateLabelStart() {
+        String myFormat = "MM/dd/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        edit_start_date.setText(sdf.format(myCalendarStart.getTime()));
+        edit_end_date.setText(sdf.format(myCalendarEnd.getTime()));
+
+    }
+
+
+
+
+
 
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_vacationdetails, menu);

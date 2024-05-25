@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,10 +29,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class ExcursionDetails extends AppCompatActivity {
     String title;
+    String date;
     int excursionID;
     int vacationID;
     EditText editTitle;
@@ -39,6 +42,7 @@ public class ExcursionDetails extends AppCompatActivity {
     TextView editDate;
     Excursion currentExcursion;
     Repository repository;
+    Vacation currentVacation;
     DatePickerDialog.OnDateSetListener startDate;
     final Calendar myCalendarStart = Calendar.getInstance();
 
@@ -52,10 +56,12 @@ public class ExcursionDetails extends AppCompatActivity {
         editTitle.setText(title);
         excursionID = getIntent().getIntExtra("id", -1);
         vacationID = getIntent().getIntExtra("vacationID", -1);
+        date = getIntent().getStringExtra("date");
         editNote=findViewById(R.id.note);
         editDate=findViewById(R.id.date);
+        editDate.setText(date);
 
-        String myFormat = "MM/dd/yy";
+        String myFormat = "MM/dd/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         ArrayList<Vacation> vacationArrayList = new ArrayList<>();
@@ -84,9 +90,8 @@ public class ExcursionDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Date date = new Date();
-                //get value from other screen,but I'm going to hard code it right now
                 String info=editDate.getText().toString();
-                Vacation vacationDate;
+                //Vacation vacationDate;
                 if(info.equals("")) info = date.toString();
                 try{
                     myCalendarStart.setTime(sdf.parse(info));
@@ -101,7 +106,7 @@ public class ExcursionDetails extends AppCompatActivity {
 
     }
     private void updateLabelStart() {
-        String myFormat = "MM/dd/yy";
+        String myFormat = "MM/dd/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         editDate.setText(sdf.format(myCalendarStart.getTime()));
@@ -129,12 +134,64 @@ public class ExcursionDetails extends AppCompatActivity {
                             .getExcursionID() + 1;
                 excursion = new Excursion(excursionID, editTitle.getText().toString(),
                         editDate.getText().toString(), vacationID);
-                repository.insert(excursion);
-                this.finish();
+
+
+                for (Vacation vacation:repository.getmAllVacations()){
+                    if (vacation.getVacationID()==excursion.getVacationID()){
+                        currentVacation = vacation;
+                    }
+                }
+                String dateFormat = "MM/dd/yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+
+                try{
+                    Date vacStartDate = sdf.parse(currentVacation.getStartDate());
+                    Date vacEndDate = sdf.parse(currentVacation.getEndDate());
+                    Date excursionDate = sdf.parse(editDate.getText().toString());
+                    if (excursionDate.before(vacStartDate)) {
+                        Toast.makeText(this, "Excursion date is before vacation start date.", Toast.LENGTH_LONG).show();
+                        return false;
+                    } else if (excursionDate.after(vacEndDate)) {
+                        Toast.makeText(this, "Excursion date is after vacation end date.", Toast.LENGTH_LONG).show();
+                        return false;
+                    } else if (excursionDate.after(vacStartDate) && (excursionDate.before(vacEndDate))){
+                        repository.insert(excursion);
+                        this.finish();
+                        return true;
+                    }
+                }
+                catch (ParseException e){
+                    e.printStackTrace();
+                }
+
             } else {
                 excursion = new Excursion(excursionID, editTitle.getText().toString(), editDate.getText().toString(), vacationID);
-                repository.update(excursion);
-                this.finish();
+                for (Vacation vacation:repository.getmAllVacations()){
+                    if (vacation.getVacationID()==excursion.getVacationID()){
+                        currentVacation = vacation;
+                    }
+                }
+                String dateFormat = "MM/dd/yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+                try{
+                    Date vacStartDate = sdf.parse(currentVacation.getStartDate());
+                    Date vacEndDate = sdf.parse(currentVacation.getEndDate());
+                    Date excursionDate = sdf.parse(editDate.getText().toString());
+                    if (excursionDate.before(vacStartDate)) {
+                        Toast.makeText(this, "Excursion date is before vacation start date.", Toast.LENGTH_LONG).show();
+                        return false;
+                    } else if (excursionDate.after(vacEndDate)) {
+                        Toast.makeText(this, "Excursion date is after vacation end date.", Toast.LENGTH_LONG).show();
+                        return false;
+                    } else {
+                        repository.update(excursion);
+                        this.finish();
+                        return true;
+                    }
+                }
+                catch (ParseException e){
+                    e.printStackTrace();
+                }
             }
             return true;
         }
@@ -167,11 +224,11 @@ public class ExcursionDetails extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.notify) {
             String dateFromScreen = editDate.getText().toString();
-            String myFormat = "MM/dd/yy"; //In which you need put here
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+            String myFormat = "MM/dd/yyyy";
+            SimpleDateFormat sdf1 = new SimpleDateFormat(myFormat, Locale.US);
             Date myDate = null;
             try {
-                myDate = sdf.parse(dateFromScreen);
+                myDate = sdf1.parse(dateFromScreen);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
