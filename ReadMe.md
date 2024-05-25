@@ -46,8 +46,7 @@
 
 
 ## Android Version 
-- 
-
+- The signed APK of the Vacation Scheduler application is deployed for Android version 8.0 (oreo) and higher
 
 ## Git Repository Link
 - https://gitlab.com/wgu-gitlab-environment/student-repos/aali271/d308-mobile-application-development-android/-/tree/working_branch?ref_type=heads
