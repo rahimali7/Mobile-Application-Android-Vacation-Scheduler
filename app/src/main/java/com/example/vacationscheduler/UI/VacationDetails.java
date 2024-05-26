@@ -1,6 +1,9 @@
 package com.example.vacationscheduler.UI;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -258,6 +261,40 @@ public class VacationDetails extends AppCompatActivity {
             else{
                 Toast.makeText(this, "Can't delete a vacation with excursions", Toast.LENGTH_SHORT).show();
             }
+        }
+
+        if (item.getItemId() == R.id.vacationShare) {
+            Intent sentIntent= new Intent();
+            sentIntent.setAction(Intent.ACTION_SEND);
+            sentIntent.putExtra(Intent.EXTRA_TEXT, "Vacation: " + editTitle.getText().toString() + "\n"
+                    + "Hotel: " + editHotel.getText().toString()+ "\n" + "Start Date: " + edit_start_date.getText().toString()+ "\n"
+                    + "End Date: " + edit_end_date.getText().toString());
+            sentIntent.setType("text/plain");
+            Intent shareIntent=Intent.createChooser(sentIntent,null);
+            startActivity(shareIntent);
+            return true;
+
+        }
+
+        if (item.getItemId() == R.id.vacationNotify) {
+            String dateFromScreen = edit_start_date.getText().toString();
+            String myFormat = "MM/dd/yyyy"; //In which you need put here
+            SimpleDateFormat sdf1 = new SimpleDateFormat(myFormat, Locale.US);
+            Date myDate = null;
+            try {
+                myDate = sdf1.parse(dateFromScreen);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Long trigger = myDate.getTime();
+            Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
+            intent.putExtra("key2", "Vacation Date: " + myDate);
+            PendingIntent sender=PendingIntent.getBroadcast(VacationDetails.this,++MainActivity.numAlert,
+                    intent,PendingIntent.FLAG_IMMUTABLE);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, trigger,sender);
+            return true;
+
         }
         return super.onOptionsItemSelected(item);
     }

@@ -215,8 +215,9 @@ public class ExcursionDetails extends AppCompatActivity {
         if (item.getItemId() == R.id.shareNote) {
             Intent sentIntent= new Intent();
             sentIntent.setAction(Intent.ACTION_SEND);
-            sentIntent.putExtra(Intent.EXTRA_TEXT, editNote.getText().toString()+ " EXTRA_TEXT");
-            sentIntent.putExtra(Intent.EXTRA_TITLE, editNote.getText().toString()+ " EXTRA_TITLE");
+            sentIntent.putExtra(Intent.EXTRA_TITLE, editTitle.getText().toString());
+            sentIntent.putExtra(Intent.EXTRA_TEXT, editDate.getText().toString());
+            //sentIntent.putExtra(Intent.EXTRA_TEXT, editNote.getText().toString());
             sentIntent.setType("text/plain");
             Intent shareIntent=Intent.createChooser(sentIntent,null);
             startActivity(shareIntent);
@@ -224,7 +225,7 @@ public class ExcursionDetails extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.notify) {
             String dateFromScreen = editDate.getText().toString();
-            String myFormat = "MM/dd/yyyy";
+            String myFormat = "MM/dd/yyyy"; //In which you need put here
             SimpleDateFormat sdf1 = new SimpleDateFormat(myFormat, Locale.US);
             Date myDate = null;
             try {
@@ -234,7 +235,7 @@ public class ExcursionDetails extends AppCompatActivity {
             }
             Long trigger = myDate.getTime();
             Intent intent = new Intent(ExcursionDetails.this, MyReceiver.class);
-            intent.putExtra("key", "message I want to see");
+            intent.putExtra("key", "Excursion Date: " + myDate);
             PendingIntent sender=PendingIntent.getBroadcast(ExcursionDetails.this,++MainActivity.numAlert,
                     intent,PendingIntent.FLAG_IMMUTABLE);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

@@ -43,6 +43,8 @@
 * The User can update the excursion details by changing the title or the date and the vacation associated with the excursion. The user can 
   click on the Save Excursion menu option from the menu located at the top right of the screen.
 * The user can delete an excursion by clicking on Delete Excursion option from the menu options located at the top right of the screen.
+* The User can also set alerts by clicking on the Notify menu option from the menu where the user will get notification 
+* The user can also share the details of the excursion by clicking on the Share menu option from the option. 
 
 
 ## Android Version 
