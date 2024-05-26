@@ -18,6 +18,11 @@
             android:enabled="true"
             android:exported="true"></receiver>
 
+        <receiver
+            android:name=".UI.MyReceiver2"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <activity
             android:name=".UI.ExcursionDetails"
             android:label="Excursion Details"

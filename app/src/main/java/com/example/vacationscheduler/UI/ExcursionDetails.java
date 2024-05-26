@@ -215,8 +215,8 @@ public class ExcursionDetails extends AppCompatActivity {
         if (item.getItemId() == R.id.shareNote) {
             Intent sentIntent= new Intent();
             sentIntent.setAction(Intent.ACTION_SEND);
-            sentIntent.putExtra(Intent.EXTRA_TITLE, editTitle.getText().toString());
-            sentIntent.putExtra(Intent.EXTRA_TEXT, editDate.getText().toString());
+            sentIntent.putExtra(Intent.EXTRA_TEXT, "Excursion Title: " + editTitle.getText().toString() + "\n" +
+            "Excursion Date: " + editDate.getText().toString());
             //sentIntent.putExtra(Intent.EXTRA_TEXT, editNote.getText().toString());
             sentIntent.setType("text/plain");
             Intent shareIntent=Intent.createChooser(sentIntent,null);
@@ -234,6 +234,7 @@ public class ExcursionDetails extends AppCompatActivity {
                 e.printStackTrace();
             }
             Long trigger = myDate.getTime();
+            //if
             Intent intent = new Intent(ExcursionDetails.this, MyReceiver.class);
             intent.putExtra("key", "Excursion Date: " + myDate);
             PendingIntent sender=PendingIntent.getBroadcast(ExcursionDetails.this,++MainActivity.numAlert,

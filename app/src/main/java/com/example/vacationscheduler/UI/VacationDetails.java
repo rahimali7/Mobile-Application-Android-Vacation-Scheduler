@@ -63,11 +63,13 @@ public class VacationDetails extends AppCompatActivity {
         editHotel = findViewById(R.id.hotel);
         edit_start_date = findViewById(R.id.startDate);
         edit_end_date = findViewById(R.id.endDate);
+
         vacationID = getIntent().getIntExtra("id", -1);
         title = getIntent().getStringExtra("title");
         hotel = getIntent().getStringExtra("hotel");
         startDate = getIntent().getStringExtra("start date");
         endDate = getIntent().getStringExtra("end date");
+
         editTitle.setText(title);
         editHotel.setText(hotel);
         edit_start_date.setText(startDate);
@@ -277,64 +279,48 @@ public class VacationDetails extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.vacationNotify) {
-            String dateFromScreen = edit_start_date.getText().toString();
+            String dateFromScreen1 = edit_start_date.getText().toString();
+            String dateFromScreen2 = edit_end_date.getText().toString();
             String myFormat = "MM/dd/yyyy"; //In which you need put here
             SimpleDateFormat sdf1 = new SimpleDateFormat(myFormat, Locale.US);
-            Date myDate = null;
+            Date startDate = null;
+            Date endDate = null;
+            Date nowDate = null;
             try {
-                myDate = sdf1.parse(dateFromScreen);
+                startDate = sdf1.parse(dateFromScreen1);
+                endDate = sdf1.parse(dateFromScreen2);
+                nowDate = new Date();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            Long trigger = myDate.getTime();
-            Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
-            intent.putExtra("key2", "Vacation Date: " + myDate);
-            PendingIntent sender=PendingIntent.getBroadcast(VacationDetails.this,++MainActivity.numAlert,
-                    intent,PendingIntent.FLAG_IMMUTABLE);
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, trigger,sender);
-            return true;
+            assert startDate != null;
+            long trigger = startDate.getTime();
+            assert endDate != null;
+            long trigger2 = endDate.getTime();
+            long trigger3 = nowDate.getTime();
+            if (startDate.equals(nowDate) || nowDate.before(endDate)) {
+                Intent intent1 = new Intent(VacationDetails.this, MyReceiver2.class);
+                intent1.putExtra("vacation Time", editTitle.getText().toString() + " vacation is starting on  " + startDate);
+                PendingIntent sender=PendingIntent.getBroadcast(VacationDetails.this,++MainActivity.numAlert,
+                        intent1,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger,sender);
+                return true;
+            }
+
+            else {
+                Intent intent2 = new Intent(VacationDetails.this, MyReceiver2.class);
+                intent2.putExtra("vacation Time", editTitle.getText().toString() + " vacation is ending on " + endDate);
+                PendingIntent sender2=PendingIntent.getBroadcast(VacationDetails.this,++MainActivity.numAlert,
+                        intent2,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2,sender2);
+                return true;
+            }
 
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
-    public void verifyDates() {
-        String vacStartDate = edit_start_date.getText().toString();
-        String vacEndDate = edit_end_date.getText().toString();
-        String dateFormat = "MM/dd/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
-
-        try {
-            Date vacationStartDate = sdf.parse(vacStartDate);
-            Date vacationEndDate = sdf.parse(vacEndDate);
-
-            assert vacationEndDate != null;
-            if (vacationEndDate.before(vacationStartDate)) {
-                Toast.makeText(this, "Vacation end date is before start date.", Toast.LENGTH_LONG).show();
-            } else {
-                assert vacationStartDate != null;
-                if (vacationStartDate.after(vacationEndDate)) {
-                    Toast.makeText(this, "Vacation start date is after end date.", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(this, "Dates are valid.", Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-        catch (ParseException e){
-            Toast.makeText(this, "Invalid date format. Please use MM-dd-yyyy.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-
-
-
-
-
-
 
 
 
