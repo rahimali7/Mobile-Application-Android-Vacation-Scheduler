@@ -31,6 +31,9 @@
 * If there is an excursion associated with the vacation, it will be shown on this screen under the vacation details. A user can click on 
   an excursion from the list of the excursions associated with the vacation and the user will be taken to a different screen called 
   Excursion Details.
+* The User can also set alerts by clicking on the Notify menu option from the menu where the user will get notification about whether the vacation is starting
+  or ending.
+* The user can also share the vacation details such as the title, hotel, start date, and end date by clicking on the share menu option. 
 * There is a floating action button at the bottom right of the screen and once clicked, the user will be take to a different screen called
   Excursion Details where the user can add a new excursion. 
 
@@ -43,7 +46,7 @@
 * The User can update the excursion details by changing the title or the date and the vacation associated with the excursion. The user can 
   click on the Save Excursion menu option from the menu located at the top right of the screen.
 * The user can delete an excursion by clicking on Delete Excursion option from the menu options located at the top right of the screen.
-* The User can also set alerts by clicking on the Notify menu option from the menu where the user will get notification 
+* The User can also set alerts by clicking on the Notify menu option from the menu where the user will get notification about the excursion date. 
 * The user can also share the details of the excursion by clicking on the Share menu option from the option. 
 
 
